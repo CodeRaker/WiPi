@@ -3,14 +3,17 @@ import subprocess
 import json
 import time
 
-class TsharkJson:
-    def __init__(self):
-        self.command = ''
-        self.northpipe, self.southpipe = Pipe()
 
-    def run_command(self, command, southpipe):
+class TsharkJsonProcess:
+
+    #creates communication pipes
+    def __init__(self):
+        self.command = '/usr/local/bin/tshark -T json'
+
+    #goes into its own process
+    def run_command(self, command, process_out):
+        print('spawned'*10)
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
-        fail_count = 0
         text_container = ''
         try_parsing = False
         while True:
@@ -25,33 +28,62 @@ class TsharkJson:
                 try_parsing = False
                 text_container = text_container.lstrip('[')
                 obj = json.loads(text_container.replace('\n', ''))
-                southpipe.send(obj)
+                process_out.send(obj)
                 text_container = ''
             except Exception as e:
                 text_container += text + '\n'
 
-    def run_process(self):
-        self.process = Process(target=self.run_command, args=(self.command, self.southpipe,))
-        self.process.start()
+    #spawns process
+    def start(self, process_out):
+        self.tshark_process = Process(target=self.run_command, args=(self.command, process_out,))
+        self.tshark_process.start()
+
+
+class TsharkJsonMonitor(TsharkJsonProcess):
+
+    def __init__(self):
+        self.patience_timer = 0
+        self.patience_limit = 1000
+        self.monitor_in, self.monitor_out = Pipe()
+        self.monitor = Process(target=self.monitor, args=(self.monitor_out,))
+
+    def start(self):
+        self.monitor.start()
+
+    def start_process(self):
+        self.process = TsharkJsonProcess()
+        self.process_in, self.process_out = Pipe()
+        self.process.start(self.process_out)
+
+    def monitor(self, monitor_out):
+        self.start_process()
+        while True:
+            self.patience_timer += 1
+            if self.process_in.poll():
+                print('monitor got one')
+                monitor_out.send(self.process_in.recv())
+                self.patience_timer = 0
+            if self.patience_timer == self.patience_limit:
+                print('patience limit reached')
+                self.process.tshark_process.terminate()
+                self.start_process()
+            time.sleep(0.01)
+
+
+class TsharkJsonController(TsharkJsonProcess, TsharkJsonMonitor):
+
+    def __init__(self):
+        self.monitor = TsharkJsonMonitor()
+        self.pipe = self.monitor.monitor_in
+
+    def start(self):
+        self.monitor.start()
 
 
 if __name__ == "__main__":
-    tsharkjson = TsharkJson()
-    tsharkjson.command = '/usr/local/bin/tshark -T json'
-    tsharkjson.run_process()
-    patience_timer = 0
+    ts = TsharkJsonController()
+    ts.start()
     while True:
-        patience_timer += 1
-        time.sleep(0.01)
-        if tsharkjson.northpipe.poll():
-            test = tsharkjson.northpipe.recv()
-            patience_timer = 0
-        if patience_timer == 3000:
-            print('killing')
-            tsharkjson.process.terminate()
-            del tsharkjson
-            tsharkjson = TsharkJson()
-            tsharkjson.command = '/usr/local/bin/tshark -T json'
-            tsharkjson.run_process()
-            patience_timer = 0
-        print(str(patience_timer))
+        if ts.pipe.poll():
+            text = ts.pipe.recv()
+            print(text)
