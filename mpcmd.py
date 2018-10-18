@@ -5,7 +5,10 @@ import time
 
 
 class TsharkJsonProcess:
-
+    """Spawns the Tshark process with JSON output and parses it line for line.
+    When a complete JSON object has been constructed, it is sent through the pipe,
+    to the monitor process.
+    """
     def __init__(self):
         self.command = '/usr/local/bin/tshark -T json'
 
@@ -37,10 +40,14 @@ class TsharkJsonProcess:
 
 
 class TsharkJsonMonitor(TsharkJsonProcess):
-
+    """Spawns the Monitor process, that checks the Tshark pipe for output. All received output,
+    is handed over to the controller pipe. If the monitor sees no output from Tshark,
+    for a given time (patience limit), it assumes something went wrong. It then kills the process,
+    and creates a new one.
+    """
     def __init__(self):
         self.patience_timer = 0
-        self.patience_limit = 1000
+        self.patience_limit = 3000
         self.monitor_in, self.monitor_out = Pipe()
         self.monitor = Process(target=self.monitor, args=(self.monitor_out,))
 
@@ -68,7 +75,9 @@ class TsharkJsonMonitor(TsharkJsonProcess):
 
 
 class TsharkJsonController(TsharkJsonProcess, TsharkJsonMonitor):
-
+    """The controller is the facade to the main code. The only interesting part, for the main code,
+    is the pipe, where all data from the monitor comes out.
+    """
     def __init__(self):
         self.monitor = TsharkJsonMonitor()
         self.pipe = self.monitor.monitor_in
