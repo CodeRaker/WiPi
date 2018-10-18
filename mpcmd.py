@@ -9,11 +9,11 @@ class TsharkJsonProcess:
     When a complete JSON object has been constructed, it is sent through the pipe,
     to the monitor process.
     """
+
     def __init__(self):
         self.command = '/usr/local/bin/tshark -T json'
 
     def run_command(self, command, process_out):
-        print('spawned'*10)
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
         text_container = ''
         try_parsing = False
@@ -45,6 +45,7 @@ class TsharkJsonMonitor(TsharkJsonProcess):
     for a given time (patience limit), it assumes something went wrong. It then kills the process,
     and creates a new one.
     """
+
     def __init__(self):
         self.patience_timer = 0
         self.patience_limit = 3000
@@ -64,11 +65,9 @@ class TsharkJsonMonitor(TsharkJsonProcess):
         while True:
             self.patience_timer += 1
             if self.process_in.poll():
-                print('monitor got one')
                 monitor_out.send(self.process_in.recv())
                 self.patience_timer = 0
             if self.patience_timer == self.patience_limit:
-                print('patience limit reached')
                 self.process.tshark_process.terminate()
                 self.start_process()
             time.sleep(0.01)
@@ -78,6 +77,7 @@ class TsharkJsonController(TsharkJsonProcess, TsharkJsonMonitor):
     """The controller is the facade to the main code. The only interesting part, for the main code,
     is the pipe, where all data from the monitor comes out.
     """
+    
     def __init__(self):
         self.monitor = TsharkJsonMonitor()
         self.pipe = self.monitor.monitor_in
