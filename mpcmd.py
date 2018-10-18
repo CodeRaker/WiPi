@@ -73,11 +73,11 @@ class TsharkJsonMonitor(TsharkJsonProcess):
             time.sleep(0.01)
 
 
-class TsharkJsonController(TsharkJsonProcess, TsharkJsonMonitor):
+class TsharkJsonController(TsharkJsonMonitor):
     """The controller is the facade to the main code. The only interesting part, for the main code,
     is the pipe, where all data from the monitor comes out.
     """
-    
+
     def __init__(self):
         self.monitor = TsharkJsonMonitor()
         self.pipe = self.monitor.monitor_in
