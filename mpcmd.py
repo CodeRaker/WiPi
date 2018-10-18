@@ -6,11 +6,9 @@ import time
 
 class TsharkJsonProcess:
 
-    #creates communication pipes
     def __init__(self):
         self.command = '/usr/local/bin/tshark -T json'
 
-    #goes into its own process
     def run_command(self, command, process_out):
         print('spawned'*10)
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
@@ -33,7 +31,6 @@ class TsharkJsonProcess:
             except Exception as e:
                 text_container += text + '\n'
 
-    #spawns process
     def start(self, process_out):
         self.tshark_process = Process(target=self.run_command, args=(self.command, process_out,))
         self.tshark_process.start()
