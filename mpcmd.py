@@ -86,18 +86,3 @@ class TsharkJsonController(TsharkJsonMonitor):
 
     def start(self):
         self.monitor.start()
-
-
-if __name__ == "__main__":
-    ts = TsharkJsonController()
-    ts.start()
-    while True:
-        if ts.pipe.poll():
-            text = ts.pipe.recv()
-            try:
-                print('Destination Host:')
-                print(text['_source']['layers']['ip']['ip.dst_host'])
-                print('Source Host:')
-                print(text['_source']['layers']['ip']['ip.src_host'])
-            except Exception as e:
-                pass
