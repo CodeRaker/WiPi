@@ -1,8 +1,10 @@
 import pygame as pg
+import os
 from settings import *
 from menu import Menu
 from colorpalette import *
 from livestats import *
+from datarecorder import *
 
 class Game:
     def __init__(self):
@@ -23,8 +25,9 @@ class Game:
         self.all_sprites = pg.sprite.LayeredUpdates()
         self.board = pg.sprite.Group()
         self.cursor = pg.sprite.Group()
-        self.livestats_group = pg.sprite.Group()
+        #self.livestats_group = pg.sprite.Group() #possible orphan
         self.livestats = LiveStats(self)
+        self.datarecorder = DataRecorder(self)
         self.Menu = Menu(self)
         self.Menu.Items.items = {'main':['Live View','Live Stats','View All','Map Devices','Settings'],'settings':['Invert Colors','Font Size','Update','Back'],'font_size':['Increase','Decrease','Reset','Back']}
 
@@ -32,6 +35,7 @@ class Game:
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.running = False
+                os.system('killall python') #hard kill to handle multiprocesses, could be better, with a soft shutdown
             if event.type == pg.KEYDOWN and event.key == pg.K_DOWN:
                 self.Menu.Cursor.down()
             if event.type == pg.KEYDOWN and event.key == pg.K_UP:
@@ -42,13 +46,13 @@ class Game:
                 self.showing_menu = not self.showing_menu
                 if self.showing_menu:
                     self.reset_menu = True
-                self.reset_showing()
 
     def reset_showing(self):
         self.showing_live_stats = False
 
     def update(self):
         self.all_sprites.update()
+        self.datarecorder.update()
 
     def draw(self):
         self.screen.fill(self.rgb.black)
@@ -62,7 +66,8 @@ class Game:
             self.cursor.draw(self.screen)
             self.Menu.Items.draw()
         elif self.showing_live_stats:
-            self.livestats_group.draw(self.screen)
+            self.livestats.draw()
+
 
     def run(self):
         while self.running:

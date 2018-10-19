@@ -53,6 +53,7 @@ class MenuCursor(pg.sprite.Sprite):
                 print('Live View')
 
             elif self.selectedItem == 1:
+                self.game.reset_showing()
                 self.game.showing_live_stats = True
                 self.game.showing_menu = False
                 print('Live Stats')
