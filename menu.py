@@ -1,5 +1,6 @@
 import pygame as pg
 from settings import *
+import os
 
 
 class MenuBoard(pg.sprite.Sprite):
@@ -90,8 +91,12 @@ class MenuCursor(pg.sprite.Sprite):
                 self.menu.Items.menu_section = 'font_size'
                 self.reset_cursor_position()
 
-            #  BACK
+            #  UPDATE
             elif self.selectedItem == 2:
+                os.system('git pull')
+
+            #  BACK
+            elif self.selectedItem == 3:
                 self.menu.Items.menu_section = 'main'
                 self.reset_cursor_position()
 

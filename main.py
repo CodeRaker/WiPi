@@ -26,7 +26,7 @@ class Game:
         self.livestats_group = pg.sprite.Group()
         self.livestats = LiveStats(self)
         self.Menu = Menu(self)
-        self.Menu.Items.items = {'main':['Live View','Live Stats','View All','Map Devices','Settings'],'settings':['Invert Colors','Font Size','Back'],'font_size':['Increase','Decrease','Reset','Back']}
+        self.Menu.Items.items = {'main':['Live View','Live Stats','View All','Map Devices','Settings'],'settings':['Invert Colors','Font Size','Update','Back'],'font_size':['Increase','Decrease','Reset','Back']}
 
     def events(self):
         for event in pg.event.get():
