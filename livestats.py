@@ -19,7 +19,7 @@ class LiveStats(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.centery = Height / 2
         self.rect.centerx = Width / 2
-        self.font_size = 20
+        self.font_size = 21
 
         self.text_color = (255,255,255)
         self.font = pg.font.SysFont('Consolas', self.font_size)
@@ -56,10 +56,12 @@ class LiveStats(pg.sprite.Sprite):
         self.game.screen.blit(self.image, (0, 0))
 
         #Total Packets
-        self.update_font_size(20)
+        self.update_font_size(21)
         total_packets_text = self.font.render(str(self.game.datarecorder.total_packets), False, self.text_color)
         total_packets_rect = total_packets_text.get_rect()
-        self.game.screen.blit(total_packets_text, (total_packets_rect.left + 90, 23))
+        total_packets_rect.right = 120
+        total_packets_rect.y = 24
+        self.game.screen.blit(total_packets_text, total_packets_rect)
 
         #Total Packets per Second
         self.update_font_size(140)
@@ -69,12 +71,11 @@ class LiveStats(pg.sprite.Sprite):
         total_packets_per_second_rect.y = 26
         self.game.screen.blit(total_packets_per_second_text, total_packets_per_second_rect)
 
-
         #Collects stats once per second, otherwise it fucks up
         if self.game.frameCounter == 1:
 
             #CPU Number
-            self.update_font_size(20)
+            self.update_font_size(21)
             cpu_usage = psutil.cpu_percent()
             self.cpu_text = self.font.render(str(cpu_usage), False, self.text_color)
             self.cpu_rect = self.cpu_text.get_rect()
@@ -84,7 +85,7 @@ class LiveStats(pg.sprite.Sprite):
             self.cpu_bar.fill((128,0,0))
             self.cpu_bar = pg.transform.scale(self.cpu_bar, (int(str(math.ceil(cpu_usage)*0.7).split('.')[0]), 13))
             self.cpu_bar_rect = self.cpu_bar.get_rect()
-            self.cpu_bar_rect.y = 161
+            self.cpu_bar_rect.y = 160
             self.cpu_bar_rect.right = Width - 40
 
             #Memory
@@ -97,7 +98,7 @@ class LiveStats(pg.sprite.Sprite):
             self.mem_bar.fill((0,128,0))
             self.mem_bar = pg.transform.scale(self.mem_bar, (int(str(math.ceil(mem_usage)*0.7).split('.')[0]), 13))
             self.mem_bar_rect = self.mem_bar.get_rect()
-            self.mem_bar_rect.y = 181
+            self.mem_bar_rect.y = 180
             self.mem_bar_rect.right = Width - 40
 
             #DISK
@@ -110,7 +111,7 @@ class LiveStats(pg.sprite.Sprite):
             self.disk_bar.fill((0,0,128))
             self.disk_bar = pg.transform.scale(self.disk_bar, (int(str(math.ceil(disk_usage)*0.7).split('.')[0]), 13))
             self.disk_bar_rect = self.disk_bar.get_rect()
-            self.disk_bar_rect.y = 201
+            self.disk_bar_rect.y = 200
             self.disk_bar_rect.right = Width - 40
 
         self.game.screen.blit(self.cpu_bar, self.cpu_bar_rect)
