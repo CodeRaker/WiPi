@@ -56,7 +56,6 @@ class MenuCursor(pg.sprite.Sprite):
                 self.game.reset_showing()
                 self.game.showing_live_stats = True
                 self.game.showing_menu = False
-                print('Live Stats')
 
             elif self.selectedItem == 2:
                 print('View All')
