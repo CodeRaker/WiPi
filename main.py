@@ -13,12 +13,12 @@ class Game:
         self.frameRate = frameRate
         self.frameCounter = 0
         self.running = True
-        self.loadAssets()
+        self.load_assets()
 
-    def loadAssets(self):
+    def load_assets(self):
         self.all_sprites = pg.sprite.LayeredUpdates()
         self.Menu = Menu(self)
-        self.Menu.Items.items = ['item1','item2','item3','VeryNiceMenu!']
+        self.Menu.Items.items = {'main':['Live View','View All','Map Devices','Settings'],'settings':['Invert Colors','Font Size','Back'],'font_size':['Increase','Decrease','Back']}
 
     def events(self):
         for event in pg.event.get():
