@@ -2,6 +2,7 @@ from multiprocessing import Process, Pipe
 import subprocess
 import json
 import time
+import sys
 
 
 class TsharkJsonProcess:
@@ -11,7 +12,7 @@ class TsharkJsonProcess:
     """
 
     def __init__(self):
-        self.command = '/usr/local/bin/tshark -T json'
+        self.command = '/usr/local/bin/tshark -T json -Q'
 
     def run_command(self, command, process_out):
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
@@ -28,7 +29,8 @@ class TsharkJsonProcess:
             try:
                 try_parsing = False
                 text_container = text_container.lstrip('[')
-                obj = json.loads(text_container.replace('\n', ''))
+                text_container = text_container.replace('\\u', '/u')
+                obj = json.loads(text_container.replace('\n\r', ''))
                 process_out.send(obj)
                 text_container = ''
             except Exception as e:
@@ -92,4 +94,10 @@ if __name__ == "__main__":
     while True:
         if ts.pipe.poll():
             text = ts.pipe.recv()
-            print(text)
+            try:
+                print('Destination Host:')
+                print(text['_source']['layers']['ip']['ip.dst_host'])
+                print('Source Host:')
+                print(text['_source']['layers']['ip']['ip.src_host'])
+            except Exception as e:
+                pass
