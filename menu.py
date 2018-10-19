@@ -6,7 +6,7 @@ class MenuBoard(pg.sprite.Sprite):
 
     def __init__(self, Game):
         self.game = Game
-        self.groups = Game.all_sprites
+        self.groups = Game.all_sprites, Game.board
         self._layer = 1
         pg.sprite.Sprite.__init__(self, self.groups)
         self.image = pg.Surface((Width,Height))
@@ -21,7 +21,7 @@ class MenuCursor(pg.sprite.Sprite):
     def __init__(self, Menu, Game):
         self.menu = Menu
         self.game = Game
-        self.groups = Game.all_sprites
+        self.groups = Game.all_sprites, Game.cursor
         self._layer = 2
         pg.sprite.Sprite.__init__(self, self.groups)
         self.image = pg.Surface((self.menu.Board.rect.width,
@@ -52,12 +52,17 @@ class MenuCursor(pg.sprite.Sprite):
                 print('Live View')
 
             elif self.selectedItem == 1:
-                print('View All')
+                self.game.showing_live_stats = True
+                self.game.showing_menu = False
+                print('Live Stats')
 
             elif self.selectedItem == 2:
-                print('Map Devices')
+                print('View All')
 
             elif self.selectedItem == 3:
+                print('Map Devices')
+
+            elif self.selectedItem == 4:
                 print('Settings')
                 self.menu.Items.menu_section = 'settings'
                 self.reset_cursor_position()
@@ -72,11 +77,13 @@ class MenuCursor(pg.sprite.Sprite):
                     self.menu.Board.image.fill((255,255,255))
                     self.cursor_color = (255,165,0)
                     self.image.fill(self.cursor_color)
+                    self.game.livestats.image = self.game.livestats.images[1]
                 else:
                     self.menu.Items.text_color = (255,255,255)
                     self.menu.Board.image.fill((0,0,0))
                     self.cursor_color = (0,0,255)
                     self.image.fill(self.cursor_color)
+                    self.game.livestats.image = self.game.livestats.images[0]
 
             #  FONT SIZE
             elif self.selectedItem == 1:
@@ -94,16 +101,22 @@ class MenuCursor(pg.sprite.Sprite):
             #  INCREASE
             if self.selectedItem == 0:
                 self.menu.Items.update_font_size('increase')
-                self.update_cursor_size()
+                self.update_cursor_size(self.menu.Items.menu_init_y + (self.rect.height))
 
             #  DECREASE
             elif self.selectedItem == 1:
                 self.menu.Items.update_font_size('decrease')
-                self.update_cursor_size()
-                self.rect.y = self.menu.Items.menu_init_y + self.rect.height + self.rect.height
+                self.update_cursor_size(self.menu.Items.menu_init_y + (self.rect.height*2))
+
+            #  Reset
+            elif self.selectedItem == 2:
+                self.menu.Items.update_font_size('reset')
+                self.update_cursor_size(self.menu.Items.menu_init_y + (self.rect.height*3))
+                #  Is called twice, because it wont reset properly otherwise. Can't identify root cause
+                self.update_cursor_size(self.menu.Items.menu_init_y + (self.rect.height*3))
 
             #  BACK
-            elif self.selectedItem == 2:
+            elif self.selectedItem == 3:
                 self.menu.Items.menu_section = 'settings'
                 self.reset_cursor_position()
 
@@ -112,12 +125,12 @@ class MenuCursor(pg.sprite.Sprite):
         self.rect.y = self.menu.Items.menu_init_y + self.rect.height
         self.selectedItem = 0
 
-    def update_cursor_size(self):
+    def update_cursor_size(self, new_y):
         self.image = pg.Surface((self.menu.Board.rect.width,
                                 self.menu.Items.rect.height))
         self.image.fill(self.cursor_color)
         self.rect = self.image.get_rect()
-        self.rect.y = self.menu.Items.menu_init_y + self.rect.height
+        self.rect.y = new_y
         self.rect.centerx = Width / 2
 
 
@@ -152,9 +165,11 @@ class MenuItems(pg.sprite.Sprite):
             self.font_size += 1
         elif action == 'decrease':
             self.font_size -= 1
+        elif action == 'reset':
+            self.font_size = 25
         self.font = pg.font.SysFont('Consolas', self.font_size)
-        self.rect = self.image.get_rect()
         self.image = self.font.render('', False, self.text_color)
+        self.rect = self.image.get_rect()
 
 
 class Menu(MenuBoard, MenuCursor, MenuItems):

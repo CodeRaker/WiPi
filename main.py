@@ -2,6 +2,7 @@ import pygame as pg
 from settings import *
 from menu import Menu
 from colorpalette import *
+from livestats import *
 
 class Game:
     def __init__(self):
@@ -14,11 +15,18 @@ class Game:
         self.frameCounter = 0
         self.running = True
         self.load_assets()
+        self.showing_menu = False
+        self.reset_menu = False
+        self.showing_live_stats = False
 
     def load_assets(self):
         self.all_sprites = pg.sprite.LayeredUpdates()
+        self.board = pg.sprite.Group()
+        self.cursor = pg.sprite.Group()
+        self.livestats_group = pg.sprite.Group()
+        self.livestats = LiveStats(self)
         self.Menu = Menu(self)
-        self.Menu.Items.items = {'main':['Live View','View All','Map Devices','Settings'],'settings':['Invert Colors','Font Size','Back'],'font_size':['Increase','Decrease','Back']}
+        self.Menu.Items.items = {'main':['Live View','Live Stats','View All','Map Devices','Settings'],'settings':['Invert Colors','Font Size','Back'],'font_size':['Increase','Decrease','Reset','Back']}
 
     def events(self):
         for event in pg.event.get():
@@ -30,14 +38,31 @@ class Game:
                 self.Menu.Cursor.up()
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                 self.Menu.Cursor.select()
+            if event.type == pg.KEYDOWN and event.key == pg.K_m:
+                self.showing_menu = not self.showing_menu
+                if self.showing_menu:
+                    self.reset_menu = True
+                self.reset_showing()
+
+    def reset_showing(self):
+        self.showing_live_stats = False
 
     def update(self):
         self.all_sprites.update()
 
     def draw(self):
         self.screen.fill(self.rgb.black)
-        self.all_sprites.draw(self.screen)
-        self.Menu.Items.draw()
+        #self.all_sprites.draw(self.screen)
+        if self.showing_menu:
+            if self.reset_menu:
+                self.Menu.Items.menu_section == 'main'
+                self.Menu.Cursor.reset_cursor_position()
+                self.reset_menu = False
+            self.board.draw(self.screen)
+            self.cursor.draw(self.screen)
+            self.Menu.Items.draw()
+        elif self.showing_live_stats:
+            self.livestats_group.draw(self.screen)
 
     def run(self):
         while self.running:
