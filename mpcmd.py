@@ -20,21 +20,24 @@ class TsharkJsonProcess:
         try_parsing = False
         while True:
             line = process.stdout.readline().rstrip()
-            if not line:
-                break
+            #if not line:
+            #    break
             try_parsing = False
             text = line.decode()
-            if text.replace(' ', '') == ',':
-                try_parsing = True
-            try:
-                try_parsing = False
-                text_container = text_container.lstrip('[')
-                text_container = text_container.replace('\\u', '/u')
-                obj = json.loads(text_container.replace('\n\r', ''))
-                process_out.send(obj)
+            text_probe = text.replace(' ', '')
+            if text_probe == '{':
                 text_container = ''
-            except Exception as e:
-                text_container += text + '\n'
+                try_parsing = True
+            if text_probe != ',' or text_probe != '':
+                try:
+                    try_parsing = False
+                    text_container = text_container.lstrip('[')
+                    text_container = text_container.replace('\\u', '/u')
+                    obj = json.loads(text_container.replace('\n\r', ''))
+                    process_out.send(obj)
+                    text_container = ''
+                except Exception as e:
+                    text_container += text + '\n'
 
     def start(self, process_out):
         self.tshark_process = Process(target=self.run_command, args=(self.command, process_out,))
