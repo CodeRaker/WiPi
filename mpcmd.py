@@ -12,7 +12,7 @@ class TsharkJsonProcess:
     """
 
     def __init__(self):
-        self.command = '/usr/local/bin/tshark -T json -Q'
+        self.command = '/usr/local/bin/tshark -i wlan0 -T json -Q'
 
     def run_command(self, command, process_out):
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
