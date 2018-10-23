@@ -40,7 +40,7 @@ class TsharkJsonProcess:
                         self.wlan_channel += 1
                         if self.wlan_channel == 14:
                             self.wlan_channel = 1
-                        subprocess.call('iwconfig wlan0 channel ' + str(self.wlan_channel))
+                        subprocess.call(['iwconfig','wlan0','channel',str(self.wlan_channel)])
 
                 except Exception as e:
                     text_container += text + '\n'
