@@ -13,42 +13,16 @@ class TsharkJsonProcess:
     """
 
     def __init__(self):
-        self.command = '/usr/local/bin/tshark -i wlan0 -T json -Q'
+        self.command = '/usr/local/bin/tshark -i wlan0 -T fields -E separator=@ -e "wlan.fc.type_subtype" -e "wlan_radio.signal_dbm" -e "wlan.ssid" -e "wlan.addr" -e "wlan.sa" -e "wlan.country_info.code"'
         self.wlan_channel_hopping = True
         self.wlan_channel = 0
 
     def run_command(self, command, process_out):
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
-        #text_container = ''
-        #try_parsing = False
         while True:
             line = process.stdout.readline().rstrip()
-            #try_parsing = False
             line = line.decode()
-            #text_probe = text.replace(' ', '')
-            #if text_probe == '{':
-             #   text_container = ''
-              #  try_parsing = True
-            
-            if line.startswith('{"timestamp'):
-                meta_dict = ast.literal_eval(line)
-                print(meta_dict['timestamp'])
-            """if text_probe != ',' or text_probe != '':
-                try:
-                    try_parsing = False
-                    text_container = text_container.lstrip('[')
-                    text_container = text_container.replace('\\u', '/u')
-                    obj = json.loads(text_container.replace('\n\r', ''))
-                    process_out.send(obj)
-                    text_container = ''
-                    if self.wlan_channel_hopping:
-                        self.wlan_channel += 1
-                        if self.wlan_channel == 14:
-                            self.wlan_channel = 1
-                        subprocess.call(['iwconfig','wlan0','channel',str(self.wlan_channel)])
-
-                except Exception as e:
-                    text_container += text + '\n' """
+            print(line)
 
     def start(self, process_out):
         self.tshark_process = Process(target=self.run_command, args=(self.command, process_out,))
