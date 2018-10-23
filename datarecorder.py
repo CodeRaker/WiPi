@@ -21,6 +21,7 @@ class DataRecorder:
             self.total_packets_per_second_cache[self.game.frameCounter] = ''
             self.total_packets_per_second = len(self.total_packets_per_second_cache)
             try:
+                print(str(text['_source']['layers']['wlan']['wlan.fc.type_subtype']))
                 if dw['_source']['layers']['wlan']['wlan.fc.type_subtype'] == '8':
                     self.total_beacons += 1
             except Exception as e:

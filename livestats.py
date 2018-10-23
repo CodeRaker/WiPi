@@ -76,7 +76,7 @@ class LiveStats(pg.sprite.Sprite):
         total_beacons_text = self.font.render(str(self.game.datarecorder.total_beacons), False, self.text_color)
         total_beacons_rect = total_beacons_text.get_rect()
         total_beacons_rect.right = 120
-        total_beacons_rect.y = 42
+        total_beacons_rect.y = 44
         self.game.screen.blit(total_beacons_text, total_beacons_rect)
 
         #Collects stats once per second, otherwise it fucks up
