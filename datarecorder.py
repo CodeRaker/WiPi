@@ -8,6 +8,7 @@ class DataRecorder:
         self.total_packets = 0
         self.total_packets_per_second = 0
         self.total_packets_per_second_cache = {}
+        self.total_beacons = 0
         self.ts = TsharkJsonController()
         self.ts.start()
 
@@ -18,3 +19,5 @@ class DataRecorder:
             self.total_packets += 1
             self.total_packets_per_second_cache[self.game.frameCounter] = ''
             self.total_packets_per_second = len(self.total_packets_per_second_cache)
+            if text['_source']['layers']['wlan']['wlan.fc.type_subtype'] == 8:
+                self.total_beacons += 1
