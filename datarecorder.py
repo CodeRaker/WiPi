@@ -20,6 +20,7 @@ class DataRecorder:
             self.total_packets += 1
             self.total_packets_per_second_cache[self.game.frameCounter] = ''
             self.total_packets_per_second = len(self.total_packets_per_second_cache)
+            #Only gets higher layer wlan subtypes even though they exist he 8,4,5 etc
             try:
                 print(str(text['_source']['layers']['wlan']['wlan.fc.type_subtype']))
                 if dw['_source']['layers']['wlan']['wlan.fc.type_subtype'] == '8':
