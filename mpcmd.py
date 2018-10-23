@@ -13,6 +13,8 @@ class TsharkJsonProcess:
 
     def __init__(self):
         self.command = '/usr/local/bin/tshark -i wlan0 -T json -Q'
+        self.wlan_channel_hopping = True
+        self.wlan_channel = 0
 
     def run_command(self, command, process_out):
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
@@ -20,8 +22,6 @@ class TsharkJsonProcess:
         try_parsing = False
         while True:
             line = process.stdout.readline().rstrip()
-            #if not line:
-            #    break
             try_parsing = False
             text = line.decode()
             text_probe = text.replace(' ', '')
@@ -36,6 +36,12 @@ class TsharkJsonProcess:
                     obj = json.loads(text_container.replace('\n\r', ''))
                     process_out.send(obj)
                     text_container = ''
+                    if channel_hopping:
+                        self.wlan_channel += 1
+                        if self.wlan_channel == 14:
+                            self.wlan_channel = 1
+                        subprocess.call('iwconfig wlan0 channel ' + str(self.wlan_channel))
+
                 except Exception as e:
                     text_container += text + '\n'
 
