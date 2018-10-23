@@ -36,7 +36,7 @@ class TsharkJsonProcess:
                     obj = json.loads(text_container.replace('\n\r', ''))
                     process_out.send(obj)
                     text_container = ''
-                    if channel_hopping:
+                    if self.wlan_channel_hopping:
                         self.wlan_channel += 1
                         if self.wlan_channel == 14:
                             self.wlan_channel = 1
