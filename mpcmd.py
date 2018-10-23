@@ -3,6 +3,7 @@ import subprocess
 import json
 import time
 import sys
+import ast
 
 
 class TsharkJsonProcess:
@@ -18,17 +19,21 @@ class TsharkJsonProcess:
 
     def run_command(self, command, process_out):
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
-        text_container = ''
-        try_parsing = False
+        #text_container = ''
+        #try_parsing = False
         while True:
             line = process.stdout.readline().rstrip()
-            try_parsing = False
-            text = line.decode()
-            text_probe = text.replace(' ', '')
-            if text_probe == '{':
-                text_container = ''
-                try_parsing = True
-            if text_probe != ',' or text_probe != '':
+            #try_parsing = False
+            line = line.decode()
+            #text_probe = text.replace(' ', '')
+            #if text_probe == '{':
+             #   text_container = ''
+              #  try_parsing = True
+            
+            if line.startswith('{"timestamp'):
+                meta_dict = ast.literal_eval(line)
+                print(meta_dict['timestamp'])
+            """if text_probe != ',' or text_probe != '':
                 try:
                     try_parsing = False
                     text_container = text_container.lstrip('[')
@@ -43,7 +48,7 @@ class TsharkJsonProcess:
                         subprocess.call(['iwconfig','wlan0','channel',str(self.wlan_channel)])
 
                 except Exception as e:
-                    text_container += text + '\n'
+                    text_container += text + '\n' """
 
     def start(self, process_out):
         self.tshark_process = Process(target=self.run_command, args=(self.command, process_out,))
