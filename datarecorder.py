@@ -16,6 +16,7 @@ class DataRecorder:
         self.total_packets_per_second_cache.pop(self.game.frameCounter, None)
         if self.ts.pipe.poll():
             text = self.ts.pipe.recv()
+            print(text)
             self.total_packets += 1
             self.total_packets_per_second_cache[self.game.frameCounter] = ''
             self.total_packets_per_second = len(self.total_packets_per_second_cache)
@@ -23,4 +24,4 @@ class DataRecorder:
                 if text['_source']['layers']['wlan']['wlan.fc.type_subtype'] == 8:
                     self.total_beacons += 1
             except Exception as e:
-                pass 
+                pass
