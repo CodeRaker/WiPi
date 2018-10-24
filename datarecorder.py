@@ -12,6 +12,7 @@ class DataRecorder:
         self.total_beacons_per_second = 0
         self.total_beacons_per_second_cache = {}
         self.total_probes = 0
+        self.devices = {}
         self.ts = TsharkJsonController()
         self.ts.start()
 
@@ -31,4 +32,10 @@ class DataRecorder:
             elif packet_list[0] in ['4','5']:
                 self.total_probes += 1
                 if packet_list[2] not in ['lichen','huron','CSCEmployee','']:
-                    print(packet_list[2])
+                    if packet_list[4] not in self.devices.keys():
+                        if packet_list[2]:
+                            self.devices[packet_list[4]] = [packet_list[2]]
+                    else:
+                        if packet_list[2] not in self.devices[packet_list[4]]:
+                            self.devices[packet_list[4]].append(packet_list[2])
+                    print(self.devices)
