@@ -4,6 +4,7 @@ import json
 import time
 import sys
 import ast
+import os
 
 
 class TsharkJsonProcess:
@@ -13,6 +14,9 @@ class TsharkJsonProcess:
     """
 
     def __init__(self):
+        os.system('ip link set wlan0 down')
+        os.system('iwconfig wlan0 mode monitor')
+        os.system('ip link set wlan0 up')
         self.command = '/usr/local/bin/tshark -i wlan0 -T fields -E separator=\; -e "wlan.fc.type_subtype" -e "wlan_radio.signal_dbm" -e "wlan.ssid" -e "wlan.addr" -e "wlan.sa" -e "radiotap.present.channel" -e "wlan.country_info.code"'
         self.wlan_channel_hopping = True
         self.wlan_channel = 0
