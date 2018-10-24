@@ -30,5 +30,5 @@ class DataRecorder:
                 self.total_beacons_per_second = len(self.total_beacons_per_second_cache)
             elif packet_list[0] in ['4','5']:
                 self.total_probes += 1
-                if packet_list[2] not in ['lichen','huron','CSCEmployee','']
+                if packet_list[2] not in ['lichen','huron','CSCEmployee','']:
                     print(packet_list[2])
