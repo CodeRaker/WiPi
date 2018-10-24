@@ -11,8 +11,8 @@ class LiveView(pg.sprite.Sprite):
         self._layer = 1
         pg.sprite.Sprite.__init__(self, self.groups)
         self.images = []
-        self.images.append(pg.image.load('images/blank_blue_camo.png').convert())
-        self.images.append(pg.image.load('images/blank_white_camo.png').convert())
+        self.images.append(pg.image.load('images/blank_blue_camo.png'))#.convert())
+        self.images.append(pg.image.load('images/blank_white_camo.png'))#.convert())
         self.image = self.images[0]
         self.rect = self.image.get_rect()
         self.rect.centery = Height / 2
