@@ -1,3 +1,5 @@
+import pygame as pg
+
 class LiveView(pg.sprite.Sprite):
     """
     Displays a Live View of Collected data.
