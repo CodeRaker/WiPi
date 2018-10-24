@@ -30,3 +30,4 @@ class DataRecorder:
                 self.total_beacons_per_second = len(self.total_beacons_per_second_cache)
             elif packet_list[0] in ['4','5']:
                 self.total_probes += 1
+                print(packet_list[2])
