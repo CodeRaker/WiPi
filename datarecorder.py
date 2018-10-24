@@ -11,6 +11,7 @@ class DataRecorder:
         self.total_beacons = 0
         self.total_beacons_per_second = 0
         self.total_beacons_per_second_cache = {}
+        self.total_probes = 0
         self.ts = TsharkJsonController()
         self.ts.start()
 
@@ -27,3 +28,5 @@ class DataRecorder:
                 self.total_beacons += 1
                 self.total_beacons_per_second_cache[self.game.frameCounter] = ''
                 self.total_beacons_per_second = len(self.total_beacons_per_second_cache)
+            elif packet_list[0] in ['4','5']:
+                self.total_probes += 1
