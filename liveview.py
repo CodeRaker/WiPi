@@ -36,7 +36,7 @@ class LiveView(pg.sprite.Sprite):
             self.print_y += device_rect.height
 
             for probe in self.game.datarecorder.devices[device]:
-                probe_text = probe
+                probe_text = self.font.render(probe, False, self.text_color)
                 probe_rect = probe_text.get_rect()
                 self.game.screen.blit(probe_text, (self.print_x + 20, self.print_y))
                 self.print_y += probe_rect.height
