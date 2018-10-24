@@ -13,7 +13,7 @@ class TsharkJsonProcess:
     """
 
     def __init__(self):
-        self.command = '/usr/local/bin/tshark -i wlan0 -T fields -E separator=@ -e "wlan.fc.type_subtype" -e "wlan_radio.signal_dbm" -e "wlan.ssid" -e "wlan.addr" -e "wlan.sa" -e "wlan.country_info.code"'
+        self.command = '/usr/local/bin/tshark -i wlan0 -T fields -E separator=\; -e "wlan.fc.type_subtype" -e "wlan_radio.signal_dbm" -e "wlan.ssid" -e "wlan.addr" -e "wlan.sa" -e "radiotap.present.channel" -e "wlan.country_info.code"'
         self.wlan_channel_hopping = True
         self.wlan_channel = 0
 
@@ -21,8 +21,7 @@ class TsharkJsonProcess:
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
         while True:
             line = process.stdout.readline().rstrip()
-            line = line.decode()
-            print(line)
+            process_out.send(line.decode())
 
     def start(self, process_out):
         self.tshark_process = Process(target=self.run_command, args=(self.command, process_out,))
