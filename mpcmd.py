@@ -21,8 +21,9 @@ class TsharkJsonProcess:
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
         while True:
             line = process.stdout.readline().rstrip()
-            if line != '':
+            if line.decode() != '':
                 process_out.send(line.decode())
+                print(line)
 
     def start(self, process_out):
         self.tshark_process = Process(target=self.run_command, args=(self.command, process_out,))
