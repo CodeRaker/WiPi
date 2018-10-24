@@ -4,6 +4,7 @@ from settings import *
 from menu import Menu
 from colorpalette import *
 from livestats import *
+from liveview import *
 from datarecorder import *
 
 class Game:
@@ -20,6 +21,7 @@ class Game:
         self.showing_menu = False
         self.reset_menu = False
         self.showing_live_stats = False
+        self.showing_live_view = False
 
     def load_assets(self):
         self.all_sprites = pg.sprite.LayeredUpdates()
@@ -27,6 +29,7 @@ class Game:
         self.cursor = pg.sprite.Group()
         #self.livestats_group = pg.sprite.Group() #possible orphan
         self.livestats = LiveStats(self)
+        self.liveview = LiveView(self)
         self.datarecorder = DataRecorder(self)
         self.Menu = Menu(self)
         self.Menu.Items.items = {'main':['Live View','Statistics','View All','Map Devices','Settings'],'settings':['Invert Colors','Font Size','Update','Back'],'font_size':['Increase','Decrease','Reset','Back']}
@@ -49,6 +52,7 @@ class Game:
 
     def reset_showing(self):
         self.showing_live_stats = False
+        self.showing_live_view = False
 
     def update(self):
         self.all_sprites.update()
@@ -67,6 +71,8 @@ class Game:
             self.Menu.Items.draw()
         elif self.showing_live_stats:
             self.livestats.draw()
+        elif self.showing_live_view:
+            self.liveview.draw()
 
 
     def run(self):

@@ -50,7 +50,9 @@ class MenuCursor(pg.sprite.Sprite):
         if self.menu.Items.menu_section == 'main':
 
             if self.selectedItem == 0:
-                print('Live View')
+                self.game.reset_showing()
+                self.game.showing_live_view = True
+                self.game.showing_menu = False
 
             elif self.selectedItem == 1:
                 self.game.reset_showing()
