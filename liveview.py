@@ -35,7 +35,7 @@ class LiveView(pg.sprite.Sprite):
             for probe in self.game.datarecorder.devices[device]:
                 probe_text = probe
                 probe_rect = probe_text.get_rect()
-                self.game.screen.blit(probe_text, (self.print_x, self.print_y))
+                self.game.screen.blit(probe_text, (self.print_x + 20, self.print_y))
                 self.print_y += probe_rect.height
 
     def reset_cursor_position(self):
