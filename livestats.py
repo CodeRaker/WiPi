@@ -84,7 +84,7 @@ class LiveStats(pg.sprite.Sprite):
         total_beacons_per_second_text = self.font.render(str(self.game.datarecorder.total_beacons_per_second), False, self.text_color)
         total_beacons_per_second_rect = total_beacons_per_second_text.get_rect()
         total_beacons_per_second_rect.x = 30
-        total_beacons_per_second_rect.y = 140
+        total_beacons_per_second_rect.y = 150
         self.game.screen.blit(total_beacons_per_second_text, total_beacons_per_second_rect)
 
         #Total Probes
