@@ -24,6 +24,7 @@ class LiveView(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.print_y = 0
         self.print_x = 0
+        self.changed_cursor_side = False
 
     def draw(self):
         self.reset_cursor_position()
@@ -34,13 +35,23 @@ class LiveView(pg.sprite.Sprite):
             device_rect = device_text.get_rect()
             self.game.screen.blit(device_text, (self.print_x, self.print_y))
             self.print_y += device_rect.height
+            if self.print_y > Height and not self.changed_cursor_side:
+                self.cursor_change_side()
 
             for probe in self.game.datarecorder.devices[device]:
                 probe_text = self.font.render(probe, False, self.text_color)
                 probe_rect = probe_text.get_rect()
                 self.game.screen.blit(probe_text, (self.print_x + 20, self.print_y))
                 self.print_y += probe_rect.height
+                if self.print_y > Height and not self.changed_cursor_side:
+                    self.cursor_change_side()
 
     def reset_cursor_position(self):
         self.print_y = 0
         self.print_x = 0
+        self.changed_cursor_side = False
+
+    def cursor_change_side(self):
+        self.print_x = Width / 2
+        self.print_y = 0
+        self.changed_cursor_side = True
