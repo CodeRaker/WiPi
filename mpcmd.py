@@ -23,7 +23,6 @@ class TsharkJsonProcess:
             line = process.stdout.readline().rstrip()
             if line.decode() != '':
                 process_out.send(line.decode())
-                print(line)
 
     def start(self, process_out):
         self.tshark_process = Process(target=self.run_command, args=(self.command, process_out,))
