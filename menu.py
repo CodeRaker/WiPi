@@ -98,7 +98,7 @@ class MenuCursor(pg.sprite.Sprite):
             #  UPDATE
             elif self.selectedItem == 2:
                 os.system('git pull')
-                os.system('init 6')
+                os.system('reboot')
 
             #  BACK
             elif self.selectedItem == 3:
