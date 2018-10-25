@@ -13,8 +13,8 @@ class LiveStats(pg.sprite.Sprite):
         self._layer = 1
         pg.sprite.Sprite.__init__(self, self.groups)
         self.images = []
-        self.images.append(pg.image.load('images/livestats_blue_camo.png').convert())
-        self.images.append(pg.image.load('images/livestats_white.png').convert())
+        self.images.append(pg.image.load('images/livestats_blue_camo.bmp').convert())
+        self.images.append(pg.image.load('images/livestats_white.bmp').convert())
         self.image = self.images[0]
         self.rect = self.image.get_rect()
         self.rect.centery = Height / 2
