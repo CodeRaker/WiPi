@@ -8,6 +8,8 @@ from liveview import *
 from datarecorder import *
 import RPi.GPIO as GPIO
 
+os.chdir('/root/wipi/')
+
 class Game:
     def __init__(self):
         os.environ["SDL_FBDEV"] = "/dev/fb1"

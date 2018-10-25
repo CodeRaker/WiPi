@@ -1,7 +1,10 @@
 import pygame as pg
 import psutil
 import math
+import os
 from settings import *
+
+os.chdir('/root/wipi/')
 
 class LiveStats(pg.sprite.Sprite):
     """

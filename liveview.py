@@ -1,5 +1,9 @@
 import pygame as pg
+import os
 from settings import *
+
+os.chdir('/root/wipi/')
+
 
 class LiveView(pg.sprite.Sprite):
     """
