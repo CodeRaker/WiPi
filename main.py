@@ -6,7 +6,7 @@ from colorpalette import *
 from livestats import *
 from liveview import *
 from datarecorder import *
-from pitftgpio import PiTFT_GPIO
+import RPi.GPIO as GPIO
 
 class Game:
     def __init__(self):
@@ -32,7 +32,6 @@ class Game:
         self.reset_menu = False
         self.showing_live_stats = False
         self.showing_live_view = False
-        self.pitft = PiTFT_GPIO()
 
     def load_assets(self):
         self.all_sprites = pg.sprite.LayeredUpdates()
