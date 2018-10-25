@@ -1,6 +1,5 @@
 from mpcmd import TsharkJsonController
 
-
 class DataRecorder:
 
     def __init__(self, Game):
