@@ -2,6 +2,8 @@ import pygame as pg
 from settings import *
 import os
 
+os.chdir('/root/wipi/')
+
 
 class MenuBoard(pg.sprite.Sprite):
 
@@ -96,6 +98,7 @@ class MenuCursor(pg.sprite.Sprite):
             #  UPDATE
             elif self.selectedItem == 2:
                 os.system('git pull')
+                os.system('init 6')
 
             #  BACK
             elif self.selectedItem == 3:
