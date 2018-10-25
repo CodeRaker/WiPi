@@ -8,7 +8,9 @@ from liveview import *
 from datarecorder import *
 from pitftgpio import PiTFT_GPIO
 
+#Tells to use the PiTFT screen
 os.environ["SDL_FBDEV"] = "/dev/fb1"
+pg.mouse.set_visible(False)
 
 class Game:
     def __init__(self):
@@ -54,16 +56,16 @@ class Game:
                 if self.showing_menu:
                     self.reset_menu = True
 
-            if self.pitft.Button1:
-                self.showing_menu = not self.showing_menu
-                if self.showing_menu:
-                    self.reset_menu = True
-            if self.pitft.Button2:
-                self.Menu.Cursor.up()
-            if self.pitft.Button3:
-                self.Menu.Cursor.down()
-            if self.pitft.Button4:
-                self.Menu.Cursor.select()
+        if self.pitft.Button1:
+            self.showing_menu = not self.showing_menu
+            if self.showing_menu:
+                self.reset_menu = True
+        if self.pitft.Button2:
+            self.Menu.Cursor.up()
+        if self.pitft.Button3:
+            self.Menu.Cursor.down()
+        if self.pitft.Button4:
+            self.Menu.Cursor.select()
 
     def reset_showing(self):
         self.showing_live_stats = False
