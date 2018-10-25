@@ -8,6 +8,8 @@ from liveview import *
 from datarecorder import *
 from pitftgpio import PiTFT_GPIO
 
+os.environ["SDL_FBDEV"] = "/dev/fb1"
+
 class Game:
     def __init__(self):
         pg.init()
