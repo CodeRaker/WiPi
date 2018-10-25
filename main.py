@@ -10,13 +10,6 @@ import RPi.GPIO as GPIO
 
 class Game:
     def __init__(self):
-        GPIO.setmode(GPIO.BCM)
-        channel_list = [17, 22, 23, 27]
-        GPIO.setup(channel_list, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-        GPIO.add_event_detect(17, GPIO.FALLING, callback=self.show_menu, bouncetime=200)
-        GPIO.add_event_detect(22, GPIO.FALLING, callback=self.Menu.Cursor.up, bouncetime=200)
-        GPIO.add_event_detect(23, GPIO.FALLING, callback=self.Menu.Cursor.down, bouncetime=200)
-        GPIO.add_event_detect(27, GPIO.FALLING, callback=self.Menu.Cursor.select, bouncetime=200)
         os.environ["SDL_FBDEV"] = "/dev/fb1"
         pg.init()
         pg.mouse.set_visible(False)
@@ -43,6 +36,14 @@ class Game:
         self.datarecorder = DataRecorder(self)
         self.Menu = Menu(self)
         self.Menu.Items.items = {'main':['Live View','Statistics','View All','Map Devices','Settings'],'settings':['Invert Colors','Font Size','Update','Back'],'font_size':['Increase','Decrease','Reset','Back']}
+        GPIO.setmode(GPIO.BCM)
+        channel_list = [17, 22, 23, 27]
+        GPIO.setup(channel_list, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        GPIO.add_event_detect(17, GPIO.FALLING, callback=self.show_menu, bouncetime=200)
+        GPIO.add_event_detect(22, GPIO.FALLING, callback=self.Menu.Cursor.up, bouncetime=200)
+        GPIO.add_event_detect(23, GPIO.FALLING, callback=self.Menu.Cursor.down, bouncetime=200)
+        GPIO.add_event_detect(27, GPIO.FALLING, callback=self.Menu.Cursor.select, bouncetime=200)
+
 
     def events(self):
         for event in pg.event.get():
