@@ -8,13 +8,11 @@ from liveview import *
 from datarecorder import *
 from pitftgpio import PiTFT_GPIO
 
-#Tells to use the PiTFT screen
-os.environ["SDL_FBDEV"] = "/dev/fb1"
-pg.mouse.set_visible(False)
-
 class Game:
     def __init__(self):
+        os.environ["SDL_FBDEV"] = "/dev/fb1"
         pg.init()
+        pg.mouse.set_visible(False)
         self.screen = pg.display.set_mode((Width, Height))
         pg.display.set_caption('Menu')
         self.rgb = RGBColors()
