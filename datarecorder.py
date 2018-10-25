@@ -38,4 +38,3 @@ class DataRecorder:
                     else:
                         if packet_list[2] not in self.devices[packet_list[4]]:
                             self.devices[packet_list[4]].append(packet_list[2])
-                    print(self.devices)

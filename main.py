@@ -30,7 +30,6 @@ class Game:
         self.all_sprites = pg.sprite.LayeredUpdates()
         self.board = pg.sprite.Group()
         self.cursor = pg.sprite.Group()
-        #self.livestats_group = pg.sprite.Group() #possible orphan
         self.livestats = LiveStats(self)
         self.liveview = LiveView(self)
         self.datarecorder = DataRecorder(self)
