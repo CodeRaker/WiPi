@@ -34,17 +34,17 @@ class MenuCursor(pg.sprite.Sprite):
         self.rect.centerx = Width / 2
         self.selectedItem = 0
 
-    def down(self):
+    def down(self, channel):
         if self.selectedItem < len(self.menu.Items.items[self.menu.Items.menu_section]) - 1:
             self.rect.y += self.rect.height
             self.selectedItem += 1
 
-    def up(self):
+    def up(self,channel):
         if self.selectedItem != 0:
             self.rect.y -= self.rect.height
             self.selectedItem -= 1
 
-    def select(self):
+    def select(self, channel):
 
 #  MENU MAIN
         if self.menu.Items.menu_section == 'main':

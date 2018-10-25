@@ -10,6 +10,13 @@ from pitftgpio import PiTFT_GPIO
 
 class Game:
     def __init__(self):
+        GPIO.setmode(GPIO.BCM)
+        channel_list = [17, 22, 23, 27]
+        GPIO.setup(channel_list, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        GPIO.add_event_detect(17, GPIO.FALLING, callback=self.show_menu, bouncetime=200)
+        GPIO.add_event_detect(22, GPIO.FALLING, callback=self.Menu.Cursor.up, bouncetime=200)
+        GPIO.add_event_detect(23, GPIO.FALLING, callback=self.Menu.Cursor.down, bouncetime=200)
+        GPIO.add_event_detect(27, GPIO.FALLING, callback=self.Menu.Cursor.select, bouncetime=200)
         os.environ["SDL_FBDEV"] = "/dev/fb1"
         pg.init()
         pg.mouse.set_visible(False)
@@ -54,20 +61,14 @@ class Game:
                 if self.showing_menu:
                     self.reset_menu = True
 
-        if self.pitft.Button1:
-            self.showing_menu = not self.showing_menu
-            if self.showing_menu:
-                self.reset_menu = True
-        if self.pitft.Button2:
-            self.Menu.Cursor.up()
-        if self.pitft.Button3:
-            self.Menu.Cursor.down()
-        if self.pitft.Button4:
-            self.Menu.Cursor.select()
-
     def reset_showing(self):
         self.showing_live_stats = False
         self.showing_live_view = False
+
+    def show_menu(self, channel):
+        self.showing_menu = not self.showing_menu
+        if self.showing_menu:
+            self.reset_menu = True
 
     def update(self):
         self.all_sprites.update()
