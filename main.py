@@ -68,6 +68,7 @@ class Game:
 
     def show_menu(self, channel):
         self.showing_menu = not self.showing_menu
+        self.Menu.Cursor.selectedItem = -1
         if self.showing_menu:
             self.reset_menu = True
 
