@@ -21,7 +21,7 @@ class TsharkJsonProcess:
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
         while True:
             line = process.stdout.readline().rstrip()
-            if line.decode()[:1] in ['4;','5;','8;']:
+            if line.decode()[:2] in ['4;','5;','8;']:
                 process_out.send(line.decode())
 
     def start(self, process_out):
