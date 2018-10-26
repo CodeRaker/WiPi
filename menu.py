@@ -34,7 +34,7 @@ class MenuCursor(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.y = self.menu.Items.menu_init_y + self.rect.height
         self.rect.centerx = Width / 2
-        self.selectedItem = 0
+        self.selectedItem = -1
 
     def down(self, channel):
         if self.game.showing_live_view:
