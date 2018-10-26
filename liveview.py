@@ -37,16 +37,25 @@ class LiveView(pg.sprite.Sprite):
         self.reset_cursor_position()
         self.game.screen.blit(self.image, (0, 0))
         self.page_max = len(self.game.datarecorder.devices)
-        device_text = self.font.render(self.game.datarecorder.devices[self.page], False, self.text_color)
-        device_rect = device_text.get_rect()
-        self.game.screen.blit(device_text, (self.print_x, self.print_y))
-        self.print_y += device_rect.height
+
+        try:
+            device_text = self.font.render(self.game.datarecorder.devices[self.page], False, self.text_color)
+            device_rect = device_text.get_rect()
+            self.game.screen.blit(device_text, (self.print_x, self.print_y))
+            self.print_y += device_rect.height
+        except Exception as e:
+            pass
+
         #Print SSIDs broadcasted by device Probe Request
-        for probe in self.game.datarecorder.devices[self.page]:
-            probe_text = self.font.render(probe, False, self.text_color)
-            probe_rect = probe_text.get_rect()
-            self.game.screen.blit(probe_text, (self.print_x + 20, self.print_y))
-            self.print_y += probe_rect.height
+        try:
+            for probe in self.game.datarecorder.devices[self.page]:
+                probe_text = self.font.render(probe, False, self.text_color)
+                probe_rect = probe_text.get_rect()
+                self.game.screen.blit(probe_text, (self.print_x + 20, self.print_y))
+                self.print_y += probe_rect.height
+        except Exception as e:
+            pass
+
 
         #Should print current page / total pages
         # #Print Devices
