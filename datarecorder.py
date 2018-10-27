@@ -30,29 +30,32 @@ class DataRecorder:
             except:
                 pass
 
+    #Update probe/device data
     def update(self):
-        """         Packet List contents
-                    --------------------
-                    0: "wlan.fc.type_subtype"
-                    1: "wlan_radio.signal_dbm"
-                    2: "wlan.ssid"
-                    3: "wlan.addr"
-                    4: "wlan.sa"
-                    5: "radiotap.present.channel"
-                    6: "wlan.country_info.code"
-
-                    Device List contents
-                    --------------------
-                    Key: MAC address
-                    0: First Seen timestamp #datetime.datetime.now().strftime("%A, %d. %B %Y %I:%M")
-                    1: Last Seen timestamp #datetime.datetime.now().strftime("%A, %d. %B %Y %I:%M")
-                    2: Probe Count
-                    3: SSIDs requested - List
-                    4: Device Vendor
-                    5: Last signal strength
-                    6: Country Code
         """
-        
+        Packet List contents
+        --------------------
+        0: "wlan.fc.type_subtype"
+        1: "wlan_radio.signal_dbm"
+        2: "wlan.ssid"
+        3: "wlan.addr"
+        4: "wlan.sa"
+        5: "radiotap.present.channel"
+        6: "wlan.country_info.code"
+
+        Device List contents
+        --------------------
+        Key: MAC address
+        0: First Seen timestamp #datetime.datetime.now().strftime("%A, %d. %B %Y %I:%M")
+        1: Last Seen timestamp #datetime.datetime.now().strftime("%A, %d. %B %Y %I:%M")
+        2: Probe Count
+        3: SSIDs requested - List
+        4: Device Vendor
+        5: Last signal strength
+        6: Country Code
+        """
+
+        #Keep track of packets per second
         if self.game.frameCounter == 1:
             self.total_beacons_per_second_counter = 0
             self.total_packets_per_second_counter = 0
@@ -60,6 +63,7 @@ class DataRecorder:
             self.total_packets_per_second = self.total_packets_per_second_counter
             self.total_beacons_per_second = self.total_beacons_per_second_counter
 
+        #Message coming from mpcmd
         if self.ts.pipe.poll():
             text = self.ts.pipe.recv()
             packet_list = text.split(';')
