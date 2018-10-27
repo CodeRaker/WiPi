@@ -6,29 +6,40 @@ class DataRecorder:
         self.game = Game
         self.total_packets = 0
         self.total_packets_per_second = 0
-        self.total_packets_per_second_cache = {}
+        self.total_packets_per_second_counter = 0
+        #self.total_packets_per_second_cache = {}
         self.total_beacons = 0
         self.total_beacons_per_second = 0
-        self.total_beacons_per_second_cache = {}
+        self.total_beacons_per_second_counter = 0
+        #self.total_beacons_per_second_cache = {}
         self.total_probes = 0
         self.devices = {}
         self.ts = TsharkJsonController()
         self.ts.start()
 
     def update(self):
-        self.total_packets_per_second_cache.pop(self.game.frameCounter, None)
-        self.total_beacons_per_second_cache.pop(self.game.frameCounter, None)
+        #self.total_packets_per_second_cache.pop(self.game.frameCounter, None)
+        #self.total_beacons_per_second_cache.pop(self.game.frameCounter, None)
+        if self.game.frameCounter == 1:
+            self.total_beacons_per_second_counter = 0
+            self.total_packets_per_second_counter = 0
+        elif self.game.frameCounter == 60:
+            self.total_packets_per_second = self.total_packets_per_second_counter
+            self.total_beacons_per_second = self.total_beacons_per_second_counter
+
         if self.ts.pipe.poll():
             text = self.ts.pipe.recv()
             packet_list = text.split(';')
             self.total_packets += 1
-            self.total_packets_per_second_cache[self.game.frameCounter] = ''
-            self.total_packets_per_second = len(self.total_packets_per_second_cache)
+            self.total_packets_per_second_counter += 1
+            #self.total_packets_per_second_cache[self.game.frameCounter] = ''
+            #self.total_packets_per_second = len(self.total_packets_per_second_cache)
 
             if packet_list[0] == '8':
                 self.total_beacons += 1
-                self.total_beacons_per_second_cache[self.game.frameCounter] = ''
-                self.total_beacons_per_second = len(self.total_beacons_per_second_cache)
+                self.total_beacons_per_second_counter += 1
+                #self.total_beacons_per_second_cache[self.game.frameCounter] = ''
+                #self.total_beacons_per_second = len(self.total_beacons_per_second_cache)
 
             elif packet_list[0] in ['4','5']:
                 self.total_probes += 1
@@ -39,4 +50,3 @@ class DataRecorder:
                     else:
                         if packet_list[2] not in self.devices[packet_list[4]]:
                             self.devices[packet_list[4]].append(packet_list[2])
-                            
