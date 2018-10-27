@@ -36,7 +36,7 @@ class LiveView(pg.sprite.Sprite):
     def draw(self):
         self.reset_cursor_position()
         self.game.screen.blit(self.image, (0, 0))
-        self.page_max = len(self.game.datarecorder.devices)
+        self.page_max = len(self.game.datarecorder.devices) - 1
 
         try:
             device_text = self.font.render(self.game.datarecorder.devices[self.page], False, self.text_color)
@@ -48,11 +48,11 @@ class LiveView(pg.sprite.Sprite):
 
         #Print SSIDs broadcasted by device Probe Request
         try:
-            for probe in self.game.datarecorder.devices[self.page]:
-                probe_text = self.font.render(probe, False, self.text_color)
-                probe_rect = probe_text.get_rect()
-                self.game.screen.blit(probe_text, (self.print_x + 20, self.print_y))
-                self.print_y += probe_rect.height
+            for item in self.game.datarecorder.devices[list(self.game.datarecorder.devices.keys())[self.page]]:
+                item_text = self.font.render(str(item), False, self.text_color)
+                item_rect = item_text.get_rect()
+                self.game.screen.blit(item_text, (self.print_x + 20, self.print_y))
+                self.print_y += item_rect.height
         except Exception as e:
             pass
 
