@@ -31,6 +31,28 @@ class DataRecorder:
                 pass
 
     def update(self):
+        """         Packet List contents
+                    --------------------
+                    0: "wlan.fc.type_subtype"
+                    1: "wlan_radio.signal_dbm"
+                    2: "wlan.ssid"
+                    3: "wlan.addr"
+                    4: "wlan.sa"
+                    5: "radiotap.present.channel"
+                    6: "wlan.country_info.code"
+
+                    Device List contents
+                    --------------------
+                    Key: MAC address
+                    0: First Seen timestamp #datetime.datetime.now().strftime("%A, %d. %B %Y %I:%M")
+                    1: Last Seen timestamp #datetime.datetime.now().strftime("%A, %d. %B %Y %I:%M")
+                    2: Probe Count
+                    3: SSIDs requested - List
+                    4: Device Vendor
+                    5: Last signal strength
+                    6: Country Code
+        """
+        
         if self.game.frameCounter == 1:
             self.total_beacons_per_second_counter = 0
             self.total_packets_per_second_counter = 0
@@ -43,25 +65,6 @@ class DataRecorder:
             packet_list = text.split(';')
             self.total_packets += 1
             self.total_packets_per_second_counter += 1
-
-            # Packet List contents
-            # 0: "wlan.fc.type_subtype"
-            # 1: "wlan_radio.signal_dbm"
-            # 2: "wlan.ssid"
-            # 3: "wlan.addr"
-            # 4: "wlan.sa"
-            # 5: "radiotap.present.channel"
-            # 6: "wlan.country_info.code"
-
-            # Device List contents
-            # Key: MAC address
-            # 0: First Seen timestamp #datetime.datetime.now().strftime("%A, %d. %B %Y %I:%M")
-            # 1: Last Seen timestamp #datetime.datetime.now().strftime("%A, %d. %B %Y %I:%M")
-            # 2: Probe Count
-            # 3: SSIDs requested - List
-            # 4: Device Vendor
-            # 5: Last signal strength
-            # 6: Country Code
 
             #Is a Beacon
             if packet_list[0] == '8':
@@ -104,11 +107,3 @@ class DataRecorder:
                         self.devices[packet_list[4]][3].append(packet_list[2])
                     # 5: Last signal strength
                     self.devices[packet_list[4]][5] = packet_list[1]
-
-                # if packet_list[2] not in ['lichen','huron','CSCEmployee','']:
-                #     if packet_list[4] not in self.devices.keys():
-                #         if packet_list[2]:
-                #             self.devices[packet_list[4]] = [packet_list[2]]
-                #     else:
-                #         if packet_list[2] not in self.devices[packet_list[4]]:
-                #             self.devices[packet_list[4]].append(packet_list[2])
