@@ -83,4 +83,4 @@ class TsharkJsonController(TsharkJsonMonitor):
         self.monitor.start()
 
     def shutdown(self):
-        self.monitor.terminate()
+        self.monitor.monitor.terminate()
