@@ -19,7 +19,7 @@ class DataRecorder:
         self.ts.start()
 
     def load_vendors(self):
-        with open ('/root/wipi/vendors.txt') as f:
+        with open ('/root/wipi/vendors.txt', encoding = "ISO-8859-1") as f:
             try:
                 for line in f:
                     print(f)
