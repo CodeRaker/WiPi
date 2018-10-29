@@ -51,11 +51,14 @@ class TsharkJsonMonitor(TsharkJsonProcess):
         self.process_in, self.process_out = Pipe()
         self.process.start(self.process_out)
 
+    def tshark_shutdown(self):
+        self.process.tshark_process.terminate()
+
     #Runs in it own process
     def monitor(self, monitor_out):
         self.start_process()
         while True:
-            signal(SIGTERM, self.process.tshark_process.terminate())
+            signal(SIGTERM, self.tshark_shutdown)
             self.patience_timer += 1
             if self.process_in.poll():
                 monitor_out.send(self.process_in.recv())
