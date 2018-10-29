@@ -31,7 +31,6 @@ class Game:
         self.reset_menu = True
         self.showing_live_stats = False
         self.showing_live_view = False
-        self.reload_program = False
 
     def load_assets(self):
         self.all_sprites = pg.sprite.LayeredUpdates()
@@ -66,9 +65,6 @@ class Game:
                 self.showing_menu = not self.showing_menu
                 if self.showing_menu:
                     self.reset_menu = True
-
-        if self.reload_program == True:
-            self.reload()
 
     def reset_showing(self):
         self.showing_live_stats = False

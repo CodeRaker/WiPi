@@ -58,12 +58,11 @@ class LiveView(pg.sprite.Sprite):
 
         #Print Page Status
         try:
-            page_status_text = str(self.page) + '/' + str(len(self.game.datarecorder.devices))
+            page_status_text = str(self.page + 1) + '/' + str(self.page_max + 1)
             page_status_rect = page_status_text.get_rect()
-            self.game.screen.blit(page_status_text, (120, 120))
-            #self.game.screen.blit(page_status_text, (Width - page_status_rect.width, Height - page_status_rect.height))
+            self.game.screen.blit(page_status_text, (Width - page_status_rect.width, Height - page_status_rect.height))
         except Exception as e:
-            pass
+            print(e)
 
         #Should print current page / total pages
         # #Print Devices
