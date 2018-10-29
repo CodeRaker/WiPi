@@ -26,7 +26,7 @@ class LiveView(pg.sprite.Sprite):
         self.font = pg.font.SysFont('Consolas', self.font_size)
         self.font_image = self.font.render('', False, self.text_color)
         self.rect = self.image.get_rect()
-        self.print_y = 25
+        self.print_y = 0
         self.print_x = 0
         self.changed_cursor_side = False
         self.page = 0
@@ -39,7 +39,7 @@ class LiveView(pg.sprite.Sprite):
         self.page_max = len(self.game.datarecorder.devices) - 1
 
         try:
-            device_text = self.font.render(self.game.datarecorder.devices[self.page], False, self.text_color)
+            device_text = self.font.render(list(self.game.datarecorder.devices.keys()[self.page]), False, self.text_color)
             device_rect = device_text.get_rect()
             self.game.screen.blit(device_text, (self.print_x, self.print_y))
             self.print_y += device_rect.height
