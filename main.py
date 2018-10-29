@@ -100,7 +100,7 @@ class Game:
     def reload(self):
         self.datarecorder.ts.shutdown()
         GPIO.cleanup()
-        os.system('/usr/bin/python3 /root/wipi-terminator.py &')
+        os.system('reboot')
 
     def run(self):
         while self.running:
