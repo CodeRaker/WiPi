@@ -26,7 +26,7 @@ class LiveView(pg.sprite.Sprite):
         self.font = pg.font.SysFont('Consolas', self.font_size)
         self.font_image = self.font.render('', False, self.text_color)
         self.rect = self.image.get_rect()
-        self.print_y = 0
+        self.print_y = 25
         self.print_x = 0
         self.changed_cursor_side = False
         self.page = 0
