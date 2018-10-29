@@ -22,7 +22,6 @@ class DataRecorder:
         with open ('/root/wipi/vendors.txt', encoding = "ISO-8859-1") as f:
             try:
                 for line in f:
-                    print(f)
                     if "(base 16)" in line:
                         line = line.replace(':','').lower()
                         line_list = line.rstrip('\n').split('(base 16)')
@@ -30,9 +29,7 @@ class DataRecorder:
                         line_list[1] = line_list[1].replace('\t', '')
                         self.vendor_dict[line_list[0]] = line_list[1]
             except Exception as e:
-                print(e)
-
-        print(self.vendor_dict)
+                pass
 
     #Update probe/device data
     def update(self):
