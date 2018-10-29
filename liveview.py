@@ -58,7 +58,8 @@ class LiveView(pg.sprite.Sprite):
 
         #Print Page Status
         try:
-            page_status_text = str(self.page + 1) + '/' + str(self.page_max + 1)
+            page_status = str(self.page + 1) + '/' + str(self.page_max + 1)
+            page_status_text = self.font.render(page_status, False, self.text_color)
             page_status_rect = page_status_text.get_rect()
             self.game.screen.blit(page_status_text, (Width - page_status_rect.width, Height - page_status_rect.height))
         except Exception as e:
