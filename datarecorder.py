@@ -31,6 +31,8 @@ class DataRecorder:
             except:
                 print(e)
 
+        print(self.vendor_dict)
+
     #Update probe/device data
     def update(self):
         """

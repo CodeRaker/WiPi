@@ -71,6 +71,7 @@ class Game:
         self.Menu.Cursor.selectedItem = 0
         if self.showing_menu:
             self.reset_menu = True
+            self.reset_showing()
 
     def update(self):
         self.all_sprites.update()
