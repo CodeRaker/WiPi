@@ -53,6 +53,7 @@ class TsharkJsonMonitor(TsharkJsonProcess):
 
     def tshark_shutdown(self):
         self.process.tshark_process.terminate()
+        print('terminating tshark')
 
     #Runs in it own process
     def monitor(self, monitor_out):
@@ -84,3 +85,4 @@ class TsharkJsonController(TsharkJsonMonitor):
 
     def shutdown(self):
         self.monitor.monitor.terminate()
+        print('terminating monitor')
