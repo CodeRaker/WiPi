@@ -14,7 +14,7 @@ class DataRecorder:
         self.total_probes = 0
         self.devices = {}
         self.vendor_dict = {}
-        self.load_vendors
+        self.load_vendors()
         self.ts = TsharkJsonController()
         self.ts.start()
 
