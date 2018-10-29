@@ -104,8 +104,6 @@ class Game:
     def reload(self):
         self.datarecorder.ts.shutdown()
         os.system('/usr/bin/python3 /root/wipi-starter.py &')
-        sys.exit()
-
 
     def run(self):
         while self.running:
