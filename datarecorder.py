@@ -54,6 +54,7 @@ class DataRecorder:
         4: Device Vendor
         5: Last signal strength
         6: Country Code
+        7: MAC address
         """
 
         #Keep track of packets per second
@@ -103,7 +104,9 @@ class DataRecorder:
                         # 5: Last signal strength
                         packet_list[1],
                         # 6: Country Code
-                        packet_list[6]
+                        packet_list[6],
+                        # 7: MAC address
+                        packet_list[4]
                         ]
 
                     #Is a known probe request
