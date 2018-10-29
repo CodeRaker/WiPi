@@ -87,6 +87,10 @@ class DataRecorder:
                     #Is a new probe request
                     vendor_selector = packet_list[4].replace(':','')
                     if packet_list[4] not in self.devices.keys():
+                        try:
+                            vendor_entry = self.vendor_dict[vendor_selector[:6]]
+                        except Exception as e:
+                            vendor_entry = 'unknown vendor'
                         # Key: MAC address
                         self.devices[packet_list[4]] = [
                         # 0: First Seen timestamp
@@ -98,7 +102,7 @@ class DataRecorder:
                         # 3: SSIDs requested - List
                         [packet_list[2]],
                         # 4: Device Vendor
-                        self.vendor_dict[vendor_selector[:6]],
+                        vendor_entry,
                         # 5: Last signal strength
                         packet_list[1],
                         # 6: Country Code
@@ -117,4 +121,4 @@ class DataRecorder:
                         # 5: Last signal strength
                         self.devices[packet_list[4]][5] = packet_list[1]
                 except Exception as e:
-                    print(e)
+                    pass
