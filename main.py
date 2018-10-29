@@ -17,6 +17,7 @@ class Game:
         pg.mouse.set_visible(False)
         self.screen = pg.display.set_mode((Width, Height))
         pg.display.set_caption('Menu')
+        self.screen.blit('images/splash.bmp', (0,0))
         self.rgb = RGBColors()
         self.clock = pg.time.Clock()
         self.frameRate = frameRate
