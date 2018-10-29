@@ -25,6 +25,7 @@ class DataRecorder:
                     if "(base 16)" in line:
                         line = line.replace(':','')
                         line_list = line.rstrip('\n').split('(base 16)')
+                        print(line_list)
                         line_list[0] = line_list[0].replace(' ', '')
                         line_list[1] = line_list[1].replace('\t', '')
                         self.vendor_dict[line_list[0]] = line_list[1]
