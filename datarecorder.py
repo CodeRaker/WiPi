@@ -23,6 +23,7 @@ class DataRecorder:
             try:
                 for line in f:
                     if "(base 16)" in line:
+                        print(line)
                         line = line.replace(':','')
                         line_list = line.rstrip('\n').split('(base 16)')
                         print(line_list)
