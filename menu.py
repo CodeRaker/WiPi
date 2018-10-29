@@ -37,24 +37,22 @@ class MenuCursor(pg.sprite.Sprite):
         self.selectedItem = 0
 
     def down(self, channel):
-        self.selectedItem += 1
-        # if self.game.showing_live_view:
-        #     if self.game.liveview.page < self.game.liveview.page_max:
-        #         self.game.liveview.page += 1
-        #
-        # elif self.selectedItem < len(self.menu.Items.items[self.menu.Items.menu_section]) - 1:
-        #     self.rect.y += self.rect.height
-        #     self.selectedItem += 1
+        if self.game.showing_live_view:
+            if self.game.liveview.page < self.game.liveview.page_max:
+                self.game.liveview.page += 1
+
+        elif self.selectedItem < len(self.menu.Items.items[self.menu.Items.menu_section]) - 1:
+            self.rect.y += self.rect.height
+            self.selectedItem += 1
 
     def up(self,channel):
-        self.selectedItem -= 1
-        # if self.game.showing_live_view:
-        #     if self.game.liveview.page > 0:
-        #         self.game.liveview.page -= 1
-        #
-        # elif self.selectedItem != 0:
-        #     self.rect.y -= self.rect.height
-        #     self.selectedItem -= 1
+        if self.game.showing_live_view:
+            if self.game.liveview.page > 0:
+                self.game.liveview.page -= 1
+
+        elif self.selectedItem != 0:
+            self.rect.y -= self.rect.height
+            self.selectedItem -= 1
 
     def select(self, channel):
 

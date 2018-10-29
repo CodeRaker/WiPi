@@ -78,37 +78,40 @@ class DataRecorder:
 
             #Is a probe request
             elif packet_list[0] in ['4']:
-                self.total_probes += 1
+                try:
+                    self.total_probes += 1
 
-                #Is a new probe request
-                vendor_selector = packet_list[4].strip(':')
-                if packet_list[4] not in self.devices.keys():
-                    # Key: MAC address
-                    self.devices[packet_list[4]] = [
-                    # 0: First Seen timestamp
-                    datetime.datetime.now().strftime("%A, %d. %B %Y %I:%M"),
-                    # 1: Last Seen timestamp
-                    datetime.datetime.now().strftime("%A, %d. %B %Y %I:%M"),
-                    # 2: Probe Count
-                    1,
-                    # 3: SSIDs requested - List
-                    [packet_list[2]],
-                    # 4: Device Vendor
-                    self.vendor_dict[vendor_selector[:6]],
-                    # 5: Last signal strength
-                    packet_list[1],
-                    # 6: Country Code
-                    packet_list[6]
-                    ]
+                    #Is a new probe request
+                    vendor_selector = packet_list[4].strip(':')
+                    if packet_list[4] not in self.devices.keys():
+                        # Key: MAC address
+                        self.devices[packet_list[4]] = [
+                        # 0: First Seen timestamp
+                        datetime.datetime.now().strftime("%A, %d. %B %Y %I:%M"),
+                        # 1: Last Seen timestamp
+                        datetime.datetime.now().strftime("%A, %d. %B %Y %I:%M"),
+                        # 2: Probe Count
+                        1,
+                        # 3: SSIDs requested - List
+                        [packet_list[2]],
+                        # 4: Device Vendor
+                        self.vendor_dict[vendor_selector[:6]],
+                        # 5: Last signal strength
+                        packet_list[1],
+                        # 6: Country Code
+                        packet_list[6]
+                        ]
 
-                #Is a known probe request
-                else:
-                    # 1: Last Seen timestamp
-                    self.devices[packet_list[4]][1] = datetime.datetime.now().strftime("%A, %d. %B %Y %I:%M")
-                    # 2: Probe Count
-                    self.devices[packet_list[4]][2] += 1
-                    # 3: SSIDs requested - List
-                    if packet_list[2] not in self.devices[packet_list[4]][3]:
-                        self.devices[packet_list[4]][3].append(packet_list[2])
-                    # 5: Last signal strength
-                    self.devices[packet_list[4]][5] = packet_list[1]
+                    #Is a known probe request
+                    else:
+                        # 1: Last Seen timestamp
+                        self.devices[packet_list[4]][1] = datetime.datetime.now().strftime("%A, %d. %B %Y %I:%M")
+                        # 2: Probe Count
+                        self.devices[packet_list[4]][2] += 1
+                        # 3: SSIDs requested - List
+                        if packet_list[2] not in self.devices[packet_list[4]][3]:
+                            self.devices[packet_list[4]][3].append(packet_list[2])
+                        # 5: Last signal strength
+                        self.devices[packet_list[4]][5] = packet_list[1]
+                except Exception as e:
+                    print(e)
