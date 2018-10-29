@@ -23,7 +23,7 @@ class DataRecorder:
             try:
                 for line in f:
                     if "(base 16)" in line:
-                        line = line.strip(':')
+                        line = line.replace(':','')
                         line_list = line.rstrip('\n').split('(base 16)')
                         line_list[0] = line_list[0].replace(' ', '')
                         line_list[1] = line_list[1].replace('\t', '')
@@ -82,7 +82,7 @@ class DataRecorder:
                     self.total_probes += 1
 
                     #Is a new probe request
-                    vendor_selector = packet_list[4].strip(':')
+                    vendor_selector = packet_list[4].replace(':','')
                     if packet_list[4] not in self.devices.keys():
                         # Key: MAC address
                         self.devices[packet_list[4]] = [
