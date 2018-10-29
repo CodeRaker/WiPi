@@ -88,6 +88,5 @@ class TsharkJsonController(TsharkJsonMonitor):
         while True:
             if self.monitor.monitor_control_in.poll():
                 if self.monitor.monitor_control_in.recv() == 'done':
-                    print('received confirmation')
                     break
         self.monitor.monitor.terminate()
