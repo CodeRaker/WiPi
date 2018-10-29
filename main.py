@@ -23,7 +23,7 @@ class Game:
         self.frameCounter = 0
         self.running = True
         self.load_assets()
-        self.showing_menu = False
+        self.showing_menu = True
         self.reset_menu = False
         self.showing_live_stats = False
         self.showing_live_view = False
