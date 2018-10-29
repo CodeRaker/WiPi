@@ -1,6 +1,7 @@
 import pygame as pg
 from settings import *
 import os
+import time
 
 os.chdir('/root/wipi/')
 
@@ -106,6 +107,7 @@ class MenuCursor(pg.sprite.Sprite):
             #  UPDATE
             elif self.selectedItem == 2:
                 os.system('git pull')
+                time.sleep(2)
                 self.game.reload()
 
             #  BACK
