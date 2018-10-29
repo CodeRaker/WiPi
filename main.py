@@ -23,7 +23,7 @@ class Game:
         self.frameCounter = 0
         self.running = True
         self.load_assets()
-        self.showing_menu = True
+        self.showing_menu = False
         self.reset_menu = False
         self.showing_live_stats = False
         self.showing_live_view = False
@@ -68,7 +68,7 @@ class Game:
 
     def show_menu(self, channel):
         self.showing_menu = not self.showing_menu
-        self.Menu.Cursor.selectedItem = -1
+        self.Menu.Cursor.selectedItem = 0
         if self.showing_menu:
             self.reset_menu = True
 
