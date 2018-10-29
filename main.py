@@ -17,7 +17,7 @@ class Game:
         pg.mouse.set_visible(False)
         self.screen = pg.display.set_mode((Width, Height))
         pg.display.set_caption('Menu')
-        self.image = pygame.image.load('images/splash.bmp')
+        self.image = pg.image.load('images/splash.bmp')
         self.screen.blit(self.image, (0,0))
         pg.display.flip()
         self.rgb = RGBColors()
