@@ -7,6 +7,7 @@ from livestats import *
 from liveview import *
 from datarecorder import *
 import RPi.GPIO as GPIO
+import sys
 
 os.chdir('/root/wipi/')
 
@@ -30,6 +31,7 @@ class Game:
         self.reset_menu = True
         self.showing_live_stats = False
         self.showing_live_view = False
+        self.reload_program = False
 
     def load_assets(self):
         self.all_sprites = pg.sprite.LayeredUpdates()
@@ -53,7 +55,7 @@ class Game:
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.running = False
-                os.system('killall python') #hard kill to handle multiprocesses, could be better, with a soft shutdown
+                #os.system('killall python') #hard kill to handle multiprocesses, could be better, with a soft shutdown
             if event.type == pg.KEYDOWN and event.key == pg.K_DOWN:
                 self.Menu.Cursor.down()
             if event.type == pg.KEYDOWN and event.key == pg.K_UP:
@@ -64,6 +66,9 @@ class Game:
                 self.showing_menu = not self.showing_menu
                 if self.showing_menu:
                     self.reset_menu = True
+
+        if self.reload_program == True:
+            self.reload()
 
     def reset_showing(self):
         self.showing_live_stats = False
@@ -95,6 +100,11 @@ class Game:
             self.livestats.draw()
         elif self.showing_live_view:
             self.liveview.draw()
+
+    def reload(self):
+        self.datarecorder.ts.shutdown()
+        os.system('/usr/bin/python3 /root/wipi-starter.py')
+        sys.exit()
 
 
     def run(self):

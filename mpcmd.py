@@ -4,6 +4,7 @@ import json
 import time
 import sys
 import os
+from signal import signal, SIGTERM
 
 
 class TsharkJsonProcess:
@@ -50,9 +51,17 @@ class TsharkJsonMonitor(TsharkJsonProcess):
         self.process_in, self.process_out = Pipe()
         self.process.start(self.process_out)
 
+    def monitor_shutdown(self):
+        self.monitor.terminate()
+
+    def tshark_shutdown(self):
+        self.process.tshark_process.terminate()
+
+    #Runs in it own process
     def monitor(self, monitor_out):
         self.start_process()
         while True:
+            signal(SIGTERM, self.tshark_shutdown)
             self.patience_timer += 1
             if self.process_in.poll():
                 monitor_out.send(self.process_in.recv())
@@ -61,6 +70,7 @@ class TsharkJsonMonitor(TsharkJsonProcess):
                 self.process.tshark_process.terminate()
                 self.start_process()
             time.sleep(0.01)
+
 
 
 class TsharkJsonController(TsharkJsonMonitor):
@@ -74,3 +84,6 @@ class TsharkJsonController(TsharkJsonMonitor):
 
     def start(self):
         self.monitor.start()
+
+    def shutdown(self):
+        self.monitor.monitor_shutdown()
