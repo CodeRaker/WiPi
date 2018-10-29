@@ -4,7 +4,6 @@ import json
 import time
 import sys
 import os
-from signal import signal, SIGTERM
 
 
 class TsharkJsonProcess:
@@ -41,7 +40,8 @@ class TsharkJsonMonitor(TsharkJsonProcess):
         self.patience_timer = 0
         self.patience_limit = 3000
         self.monitor_in, self.monitor_out = Pipe()
-        self.monitor = Process(target=self.monitor, args=(self.monitor_out,))
+        self.monitor_control_in, self.monitor_control_out = Pipe()
+        self.monitor = Process(target=self.monitor, args=(self.monitor_out,self.monitor_control_out,))
 
     def start(self):
         self.monitor.start()
@@ -51,15 +51,15 @@ class TsharkJsonMonitor(TsharkJsonProcess):
         self.process_in, self.process_out = Pipe()
         self.process.start(self.process_out)
 
-    def tshark_shutdown(self):
-        self.process.tshark_process.terminate()
-        print('terminating tshark')
-
     #Runs in it own process
-    def monitor(self, monitor_out):
+    def monitor(self, monitor_out, monitor_control_out):
         self.start_process()
         while True:
-            signal(SIGTERM, self.tshark_shutdown)
+            if monitor_control_out.poll():
+                if monitor_control_out.recv() == 'terminate':
+                    self.process.tshark_process.terminate()
+                    monitor_control_out.send('done')
+
             self.patience_timer += 1
             if self.process_in.poll():
                 monitor_out.send(self.process_in.recv())
@@ -84,5 +84,9 @@ class TsharkJsonController(TsharkJsonMonitor):
         self.monitor.start()
 
     def shutdown(self):
+        self.monitor.monitor_control_in.send('terminate')
+        while True:
+            if self.monitor.monitor_control_in.poll():
+                if self.monitor.monitor_control_in.recv() == 'done':
+                    break
         self.monitor.monitor.terminate()
-        print('terminating monitor')
