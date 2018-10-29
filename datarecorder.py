@@ -29,8 +29,8 @@ class DataRecorder:
                         line_list[0] = line_list[0].replace(' ', '')
                         line_list[1] = line_list[1].replace('\t', '')
                         self.vendor_dict[line_list[0]] = line_list[1]
-            except:
-                pass
+            except Exception as e:
+                print(e)
 
         print(self.vendor_dict)
 
