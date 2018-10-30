@@ -46,13 +46,38 @@ class LiveView(pg.sprite.Sprite):
         # except Exception as e:
         #     pass
 
+        #
+        # Device List contents
+        # --------------------
+        # Key: MAC address
+        # 0: First Seen timestamp #datetime.datetime.now().strftime("%A, %d. %B %Y %I:%M")
+        # 1: Last Seen timestamp #datetime.datetime.now().strftime("%A, %d. %B %Y %I:%M")
+        # 2: Probe Count
+        # 3: SSIDs requested - List
+        # 4: Device Vendor
+        # 5: Last signal strength
+        # 6: Country Code
+        # 7: MAC address
+
+
         #Print SSIDs broadcasted by device Probe Request
         try:
-            for item in self.game.datarecorder.devices[list(self.game.datarecorder.devices.keys())[self.page]]:
-                item_text = self.font.render(str(item), False, self.text_color)
-                item_rect = item_text.get_rect()
-                self.game.screen.blit(item_text, (self.print_x + 20, self.print_y))
-                self.print_y += item_rect.height
+            device_list = self.game.datarecorder.devices[list(self.game.datarecorder.devices.keys())[self.page]]
+            #Device Header
+            self.draw_header('Device Details')
+            self.draw_item('MAC: ' + device_list[7]) # 7: MAC address
+            self.draw_item('Vendor: ' + device_list[4]) # 4: Device Vendor
+            self.draw_item('Country Code: ' + device_list[6]) # 6: Country Code
+            self.draw_item('First Seen: ' + device_list[0]) # 0: First Seen timestamp
+            self.draw_item('Latest Seen: '+ device_list[1]) # 1: Last Seen
+            self.draw_item('Latest Signal: ' + device_list[5]) # 5: Last signal strength
+            self.draw_header('Probes')
+            self.draw_item(device_list[3]) # 3: SSIDs requested - List
+            # for item in self.game.datarecorder.devices[list(self.game.datarecorder.devices.keys())[self.page]]:
+            #     item_text = self.font.render(str(item), False, self.text_color)
+            #     item_rect = item_text.get_rect()
+            #     self.game.screen.blit(item_text, (self.print_x + 20, self.print_y))
+            #     self.print_y += item_rect.height
         except Exception as e:
             pass
 
@@ -83,6 +108,27 @@ class LiveView(pg.sprite.Sprite):
         #         self.print_y += probe_rect.height
         #         if self.print_y > Height and not self.changed_cursor_side:
         #             self.cursor_change_side()
+
+    def draw_header(self, header):
+        current_font_size = self.font_size
+        self.change_fontsize(30)
+        header_text = self.font.render(header, False, (255,140,0))
+        header_rect = header_text.get_rect()
+        self.game.screen.blit(header_text, (self.print_x + 20, self.print_y))
+        self.print_y += header_rect.height + 5
+        self.change_fontsize(current_font_size)
+
+    def draw_item(self, item):
+        current_font_size = self.font_size
+        item_text = self.font.render(item, False, self.text_color)
+        item_rect = item_text.get_rect()
+        self.game.screen.blit(item_text, (self.print_x + 20, self.print_y))
+        self.print_y += item_rect.height
+        self.change_fontsize(current_font_size)
+
+    def change_fontsize(self, newFontSize):
+        self.font_size = newFontSize
+        self.font = pg.font.SysFont('Consolas', self.font_size)
 
     def reset_cursor_position(self):
         self.print_y = 0
