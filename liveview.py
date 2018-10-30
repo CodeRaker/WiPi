@@ -114,7 +114,7 @@ class LiveView(pg.sprite.Sprite):
         self.change_fontsize(30)
         header_text = self.font.render(header, False, (255,140,0))
         header_rect = header_text.get_rect()
-        self.game.screen.blit(header_text, (self.print_x + 20, self.print_y))
+        self.game.screen.blit(header_text, (self.print_x, self.print_y))
         self.print_y += header_rect.height + 5
         self.change_fontsize(current_font_size)
 
@@ -122,7 +122,7 @@ class LiveView(pg.sprite.Sprite):
         current_font_size = self.font_size
         item_text = self.font.render(item, False, self.text_color)
         item_rect = item_text.get_rect()
-        self.game.screen.blit(item_text, (self.print_x + 20, self.print_y))
+        self.game.screen.blit(item_text, (self.print_x, self.print_y))
         self.print_y += item_rect.height
         self.change_fontsize(current_font_size)
 
