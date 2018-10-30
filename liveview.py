@@ -71,7 +71,7 @@ class LiveView(pg.sprite.Sprite):
             self.draw_item('First Seen: ' + device_list[0]) # 0: First Seen timestamp
             self.draw_item('Latest Seen: '+ device_list[1]) # 1: Last Seen
             self.draw_item('Latest Signal: ' + device_list[5]) # 5: Last signal strength
-            self.draw_header('Probes')
+            self.draw_header('Probes ('+ str(device_list[2]) + ')')
             for item in device_list[3]:
                 self.draw_item(item) # 3: SSIDs requested - List
             # for item in self.game.datarecorder.devices[list(self.game.datarecorder.devices.keys())[self.page]]:
