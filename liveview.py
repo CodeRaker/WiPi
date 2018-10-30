@@ -72,7 +72,8 @@ class LiveView(pg.sprite.Sprite):
             self.draw_item('Latest Seen: '+ device_list[1]) # 1: Last Seen
             self.draw_item('Latest Signal: ' + device_list[5]) # 5: Last signal strength
             self.draw_header('Probes')
-            self.draw_item(device_list[3]) # 3: SSIDs requested - List
+            for item in device_list[3]:
+                self.draw_item(item) # 3: SSIDs requested - List
             # for item in self.game.datarecorder.devices[list(self.game.datarecorder.devices.keys())[self.page]]:
             #     item_text = self.font.render(str(item), False, self.text_color)
             #     item_rect = item_text.get_rect()
